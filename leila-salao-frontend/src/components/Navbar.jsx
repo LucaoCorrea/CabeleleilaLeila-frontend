@@ -45,12 +45,10 @@ const NavLink = styled(Link)`
 function Navbar() {
   return (
     <NavbarContainer>
-      <Logo to="/">Salão Elegance</Logo>
+      <Logo to="/dashboard">Salão de Beleiza</Logo>
       <NavLinks>
-        <NavLink to="/">Início</NavLink>
-        <NavLink to="/appointment">Serviços</NavLink>
-        <NavLink to="/sobre">Sobre Nós</NavLink>
-        <NavLink to="/contato">Contato</NavLink>
+        <NavLink to="/dashboard">Home</NavLink>
+        <NavLink to="/login">Sair</NavLink>
       </NavLinks>
     </NavbarContainer>
   );
