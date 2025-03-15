@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../services/api";
+import { register } from "../services/api"; // Importe a função de registro
 import styled from "styled-components";
-import { FaEnvelope, FaLock } from "react-icons/fa";
+import { FaUser, FaLock, FaEnvelope, FaIdBadge } from "react-icons/fa";
 import backgroundImage from "../assets/background.jpg";
-import { useAuth } from "../context/AuthContext";
 
+// Estilos
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -119,29 +119,39 @@ const ErrorMessage = styled.p`
   font-size: 14px;
 `;
 
-function Login() {
+function Register() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login: authLogin } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validação básica
+    if (password !== confirmPassword) {
+      setError("As senhas não coincidem!");
+      return;
+    }
+
     try {
-      const response = await login(email, password);
-      if (response) {
-        authLogin(response.user, response.token);
-        navigate("/dashboard");
+      // Chama a função de registro
+      const user = await register(firstName, lastName, email, password);
+      if (user) {
+        navigate("/login"); // Redireciona para a página de login após o registro
       }
     } catch (error) {
       if (error.response) {
+        // Erro retornado pelo backend
         setError(
           error.response.data.message ||
-            "Erro ao fazer login. Tente novamente mais tarde."
+            "Erro ao registrar. Tente novamente mais tarde."
         );
       } else {
+        // Erro de rede ou outro problema
         setError("Erro de conexão. Verifique sua internet e tente novamente.");
       }
       console.error(error);
@@ -151,9 +161,33 @@ function Login() {
   return (
     <Container>
       <Form onSubmit={handleSubmit}>
-        <Title>Login</Title>
-        <Subtitle>Faça login para acessar sua conta</Subtitle>
+        <Title>Registro</Title>
+        <Subtitle>Crie sua conta para começar</Subtitle>
         {error && <ErrorMessage>{error}</ErrorMessage>}
+        <InputContainer>
+          <Icon>
+            <FaIdBadge />
+          </Icon>
+          <Input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="Primeiro Nome"
+            required
+          />
+        </InputContainer>
+        <InputContainer>
+          <Icon>
+            <FaIdBadge />
+          </Icon>
+          <Input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="Sobrenome"
+            required
+          />
+        </InputContainer>
         <InputContainer>
           <Icon>
             <FaEnvelope />
@@ -178,13 +212,25 @@ function Login() {
             required
           />
         </InputContainer>
-        <Button type="submit">Entrar</Button>
+        <InputContainer>
+          <Icon>
+            <FaLock />
+          </Icon>
+          <Input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirme a Senha"
+            required
+          />
+        </InputContainer>
+        <Button type="submit">Registrar</Button>
         <LinkText>
-          Não tem uma conta? <Link to="/register">Registre-se</Link>
+          Já tem uma conta? <Link to="/login">Faça login</Link>
         </LinkText>
       </Form>
     </Container>
   );
 }
 
-export default Login;
+export default Register;

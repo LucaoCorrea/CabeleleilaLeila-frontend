@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import Appointments from "../pages/Appointments";
@@ -6,21 +6,38 @@ import NewAppointment from "../pages/NewAppointment";
 import EditAppointment from "../pages/EditAppointment";
 import Profile from "../pages/Profile";
 import { useAuth } from "../context/AuthContext";
+import Layout from "../components/Layout";
+import Register from "../pages/Register";
 
 function PrivateRoute({ children }) {
   const { user } = useAuth();
-  return user ? children : <Navigate to="/login" />;
+  const token = localStorage.getItem("token");
+  const location = useLocation();
+
+  if (!user || !token) {
+    return <Navigate to="/login" state={{ from: location }} />;
+  }
+
+  return children;
+}
+
+function AppLayout({ children }) {
+  return <Layout>{children}</Layout>;
 }
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
       <Route
         path="/dashboard"
         element={
           <PrivateRoute>
-            <Dashboard />
+            <AppLayout>
+              <Dashboard />
+            </AppLayout>
           </PrivateRoute>
         }
       />
@@ -28,7 +45,9 @@ export default function AppRoutes() {
         path="/appointments"
         element={
           <PrivateRoute>
-            <Appointments />
+            <AppLayout>
+              <Appointments />
+            </AppLayout>
           </PrivateRoute>
         }
       />
@@ -36,7 +55,9 @@ export default function AppRoutes() {
         path="/new-appointment"
         element={
           <PrivateRoute>
-            <NewAppointment />
+            <AppLayout>
+              <NewAppointment />
+            </AppLayout>
           </PrivateRoute>
         }
       />
@@ -44,7 +65,9 @@ export default function AppRoutes() {
         path="/edit-appointment/:id"
         element={
           <PrivateRoute>
-            <EditAppointment />
+            <AppLayout>
+              <EditAppointment />
+            </AppLayout>
           </PrivateRoute>
         }
       />
@@ -52,11 +75,21 @@ export default function AppRoutes() {
         path="/profile"
         element={
           <PrivateRoute>
-            <Profile />
+            <AppLayout>
+              <Profile />
+            </AppLayout>
           </PrivateRoute>
         }
       />
-      <Route path="*" element={<Navigate to="/login" />} />
+
+      <Route
+        path="*"
+        element={
+          <PrivateRoute>
+            <Navigate to="/dashboard" />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }
