@@ -1,0 +1,49 @@
+{
+  "servicos": [
+    {
+      "nome": "Corte Feminino",
+      "preco": 50.00,
+      "descricao": "Corte personalizado para realçar sua beleza."
+    },
+    {
+      "nome": "Corte Masculino",
+      "preco": 35.00,
+      "descricao": "Corte moderno ou clássico, conforme sua preferência."
+    },
+    {
+      "nome": "Escova",
+      "preco": 40.00,
+      "descricao": "Finalização perfeita com escova modelada."
+    },
+    {
+      "nome": "Coloração",
+      "preco": 120.00,
+      "descricao": "Tintura profissional para um novo visual."
+    },
+    {
+      "nome": "Hidratação",
+      "preco": 60.00,
+      "descricao": "Tratamento para deixar os fios mais saudáveis e brilhantes."
+    },
+    {
+      "nome": "Progressiva",
+      "preco": 200.00,
+      "descricao": "Alisamento duradouro para cabelos lisos e sedosos."
+    },
+    {
+      "nome": "Luzes",
+      "preco": 180.00,
+      "descricao": "Ilumine seu cabelo com reflexos naturais e sofisticados."
+    },
+    {
+      "nome": "Penteado",
+      "preco": 100.00,
+      "descricao": "Penteado elegante para qualquer ocasião especial."
+    },
+    {
+      "nome": "Sobrancelha",
+      "preco": 25.00,
+      "descricao": "Design de sobrancelhas para realçar seu olhar."
+    }
+  ]
+}

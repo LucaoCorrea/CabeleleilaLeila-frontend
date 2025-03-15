@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../services/api";
+import { login as apiLogin } from "../services/api";
 import styled from "styled-components";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import backgroundImage from "../assets/background.jpg";
 import { useAuth } from "../context/AuthContext";
 
+// Estilos definidos no mesmo arquivo
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -119,6 +120,7 @@ const ErrorMessage = styled.p`
   font-size: 14px;
 `;
 
+// Componente Login
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -128,23 +130,20 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await login(email, password);
-      if (response) {
-        authLogin(response.user, response.token);
+      const response = await apiLogin(email, password);
+      if (response && response.access_token) {
+        authLogin(response.access_token);
+
         navigate("/dashboard");
+      } else {
+        setError("Token de autenticação não retornado. Verifique suas credenciais.");
       }
     } catch (error) {
-      if (error.response) {
-        setError(
-          error.response.data.message ||
-            "Erro ao fazer login. Tente novamente mais tarde."
-        );
-      } else {
-        setError("Erro de conexão. Verifique sua internet e tente novamente.");
-      }
-      console.error(error);
+      setError(
+        error.response?.data?.message ||
+          "Erro ao fazer login. Tente novamente mais tarde."
+      );
     }
   };
 

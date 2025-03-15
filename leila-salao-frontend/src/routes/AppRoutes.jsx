@@ -11,11 +11,11 @@ import Register from "../pages/Register";
 
 function PrivateRoute({ children }) {
   const { user } = useAuth();
-  const token = localStorage.getItem("token");
+  const accessToken = localStorage.getItem("access_token");
   const location = useLocation();
 
-  if (!user || !token) {
-    return <Navigate to="/login" state={{ from: location }} />;
+  if (!user || !accessToken) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return children;
@@ -28,9 +28,11 @@ function AppLayout({ children }) {
 export default function AppRoutes() {
   return (
     <Routes>
+      {/* Rotas públicas */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
+      {/* Rotas privadas */}
       <Route
         path="/dashboard"
         element={
@@ -42,7 +44,7 @@ export default function AppRoutes() {
         }
       />
       <Route
-        path="/appointments"
+        path="/"
         element={
           <PrivateRoute>
             <AppLayout>
@@ -82,14 +84,8 @@ export default function AppRoutes() {
         }
       />
 
-      <Route
-        path="*"
-        element={
-          <PrivateRoute>
-            <Navigate to="/dashboard" />
-          </PrivateRoute>
-        }
-      />
+      {/* Redirecionamento para rota padrão */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

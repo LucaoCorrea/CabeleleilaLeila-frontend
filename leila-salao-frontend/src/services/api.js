@@ -4,13 +4,43 @@ const api = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1',
 });
 
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
 export const login = async (email, password) => {
     try {
         const response = await api.post('/auth/login', { email, password });
-        return response.data;
+        console.log("Resposta da API no login:", response.data);
+
+        // Retorna os tokens e o usuário (se necessário)
+        return {
+            access_token: response.data.access_token,
+            refresh_token: response.data.refresh_token,
+            user: response.data.user, // Se o backend retornar informações do usuário
+        };
     } catch (error) {
-        console.error('Login error:', error);
-        throw error;
+        if (error.response) {
+            console.error('Erro no login:', error.response.data);
+            console.error('Status do erro:', error.response.status);
+            console.error('Cabeçalhos do erro:', error.response.headers);
+            throw new Error(error.response.data.message || 'Erro ao fazer login. Tente novamente.');
+        } else if (error.request) {
+            console.error('Erro de rede:', error.request);
+            throw new Error('Erro de conexão. Verifique sua conexão com a internet e tente novamente.');
+        } else {
+            console.error('Erro na configuração da requisição:', error.message);
+            throw new Error('Erro ao configurar a requisição. Tente novamente mais tarde.');
+        }
     }
 };
 
@@ -21,7 +51,7 @@ export const register = async (firstName, lastName, email, password) => {
             lastname: lastName,
             email,
             password,
-            role: "MANAGER",
+            role: "CLIENT",
         });
         return response.data;
     } catch (error) {

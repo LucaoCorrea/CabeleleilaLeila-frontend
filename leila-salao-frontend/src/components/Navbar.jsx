@@ -48,7 +48,7 @@ function Navbar() {
       <Logo to="/">Salão Elegance</Logo>
       <NavLinks>
         <NavLink to="/">Início</NavLink>
-        <NavLink to="/servicos">Serviços</NavLink>
+        <NavLink to="/appointment">Serviços</NavLink>
         <NavLink to="/sobre">Sobre Nós</NavLink>
         <NavLink to="/contato">Contato</NavLink>
       </NavLinks>
