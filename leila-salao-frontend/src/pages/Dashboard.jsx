@@ -7,18 +7,34 @@ const Container = styled.div`
   padding: 20px;
   max-width: 800px;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 
 const Title = styled.h1`
   font-size: 2rem;
   margin-bottom: 20px;
   color: #333;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
 `;
 
 const WelcomeMessage = styled.p`
   font-size: 1.2rem;
   margin-bottom: 20px;
   color: #555;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
 `;
 
 const Button = styled.button`
@@ -34,6 +50,31 @@ const Button = styled.button`
   &:hover {
     background-color: #45a049;
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 5px 0;
+  }
+`;
+
+const ButtonExit = styled.button`
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: #af4c4c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #883636;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 5px 0;
+  }
 `;
 
 const Popup = styled.div`
@@ -46,7 +87,12 @@ const Popup = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000;
-  width: 300px;
+  width: 400px;
+
+  @media (max-width: 768px) {
+    width: 90%;
+    padding: 15px;
+  }
 `;
 
 const Overlay = styled.div`
@@ -64,7 +110,11 @@ const Input = styled.input`
   margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
-  width: 100%;
+  width: 23.6rem;
+
+  @media (max-width: 768px) {
+    padding: 8px;
+  }
 `;
 
 const Select = styled.select`
@@ -73,6 +123,10 @@ const Select = styled.select`
   border: 1px solid #ccc;
   border-radius: 5px;
   width: 100%;
+
+  @media (max-width: 768px) {
+    padding: 8px;
+  }
 `;
 
 const AppointmentList = styled.div`
@@ -85,12 +139,17 @@ const AppointmentItem = styled.div`
   border-radius: 5px;
   margin-bottom: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 
 const ErrorMessage = styled.p`
   color: #ff0000;
   font-size: 0.9rem;
   margin-top: 5px;
+  text-align: center;
 `;
 
 const LoadingMessage = styled.p`
@@ -98,6 +157,13 @@ const LoadingMessage = styled.p`
   color: #555;
   text-align: center;
   margin-top: 20px;
+`;
+
+const ContactInfo = styled.p`
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+  margin-top: 10px;
 `;
 
 const Dashboard = () => {
@@ -137,6 +203,23 @@ const Dashboard = () => {
   const handleCreateAppointment = async () => {
     if (!date || !time || !service) {
       setError("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    const selectedDate = new Date(`${date}T${time}`);
+    const today = new Date();
+    const minDate = new Date();
+    minDate.setDate(today.getDate() + 2);
+
+    if (selectedDate < today) {
+      setError("Não é possível agendar para uma data passada.");
+      return;
+    }
+
+    if (selectedDate < minDate) {
+      setError(
+        "O agendamento deve ser feito com pelo menos dois dias de antecedência."
+      );
       return;
     }
 
@@ -183,6 +266,7 @@ const Dashboard = () => {
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   placeholder="Data"
+                  min={new Date().toISOString().split("T")[0]}
                 />
                 <Input
                   type="time"
@@ -201,8 +285,13 @@ const Dashboard = () => {
                   <option value="Escova">Escova</option>
                 </Select>
                 {error && <ErrorMessage>{error}</ErrorMessage>}
+                <ContactInfo>
+                  Dúvidas? Ligue para Leila: <strong>(09) 0909-2931</strong>
+                </ContactInfo>
                 <Button onClick={handleCreateAppointment}>Salvar</Button>
-                <Button onClick={() => setShowPopup(false)}>Fechar</Button>
+                <ButtonExit onClick={() => setShowPopup(false)}>
+                  Fechar
+                </ButtonExit>
               </Popup>
             </>
           )}

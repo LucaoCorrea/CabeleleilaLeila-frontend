@@ -60,7 +60,7 @@ function Footer() {
         <FooterTitle>Contato</FooterTitle>
         <FooterText>Email: contato@salaoleila.com</FooterText>
         <FooterText>Telefone: (11) 1234-5678</FooterText>
-        <FooterText>Endereço: Rua Beleza, 123 - São Paulo, SP</FooterText>
+        <FooterText>Endereço: Rua da Beleiza, 123 - São Paulo, SP</FooterText>
       </FooterSection>
       <FooterSection>
         <FooterTitle>Redes Sociais</FooterTitle>
