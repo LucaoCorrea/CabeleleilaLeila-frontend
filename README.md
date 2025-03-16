@@ -2,6 +2,12 @@
 
 Este projeto consiste em uma aplicação full-stack para agendamentos em um salão de beleza. O front-end foi desenvolvido em  **React**  com  **Node.js** + **Vite**, e o back-end em  **Java**  com  **Spring Boot**. A aplicação está responsiva e foi projetada para funcionar em dispositivos móveis e desktops.
 
+---
+## 🔗Links do Projeto
+
+ - Front-End: [Clique aqui.](https://github.com/LucaoCorrea/CabeleleilaLeila-frontend)
+ - Back-End: [Clique aqui.](https://github.com/LucaoCorrea/CabeleleilaLeila-backend)
+
 ----------
 
 ## 🚀 Como Rodar o Projeto
@@ -64,7 +70,7 @@ Clonando o repositório Frontend
     cd leila-salao-frontend
  1.  Instale as dependências:
     
-	    npm install
+		 npm install
 
 1.  Execute o front-end: 
  
