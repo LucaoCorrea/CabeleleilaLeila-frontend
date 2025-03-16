@@ -14,7 +14,21 @@ function PrivateRoute({ children }) {
   const accessToken = localStorage.getItem("access_token");
   const location = useLocation();
 
-  if (!user || !accessToken) {
+  const isTokenValid = () => {
+    const accessToken = localStorage.getItem("access_token");
+    if (!accessToken) return false;
+
+    try {
+      const tokenData = JSON.parse(atob(accessToken.split(".")[1]));
+      const expirationTime = tokenData.exp * 1000;
+      return Date.now() < expirationTime;
+    } catch (error) {
+      console.error("Erro ao decodificar o token:", error);
+      return false;
+    }
+  };
+
+  if (!user || !isTokenValid()) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

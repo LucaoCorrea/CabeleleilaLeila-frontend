@@ -6,7 +6,6 @@ import { FaEnvelope, FaLock } from "react-icons/fa";
 import backgroundImage from "../assets/background.jpg";
 import { useAuth } from "../context/AuthContext";
 
-// Estilos definidos no mesmo arquivo
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -15,6 +14,20 @@ const Container = styled.div`
   background-image: url(${backgroundImage});
   background-size: cover;
   background-position: center;
+  overflow: hidden;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    filter: blur(8px);
+    z-index: -1;
+  }
 `;
 
 const Form = styled.form`
@@ -25,7 +38,7 @@ const Form = styled.form`
   background: rgba(255, 255, 255, 0.9);
   border-radius: 15px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
   width: 100%;
   max-width: 400px;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -120,7 +133,6 @@ const ErrorMessage = styled.p`
   font-size: 14px;
 `;
 
-// Componente Login
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -134,10 +146,12 @@ function Login() {
       const response = await apiLogin(email, password);
       if (response && response.access_token) {
         authLogin(response.access_token);
-
+        
         navigate("/dashboard");
       } else {
-        setError("Token de autenticação não retornado. Verifique suas credenciais.");
+        setError(
+          "Token de autenticação não retornado. Verifique suas credenciais."
+        );
       }
     } catch (error) {
       setError(

@@ -93,6 +93,13 @@ const ErrorMessage = styled.p`
   margin-top: 5px;
 `;
 
+const LoadingMessage = styled.p`
+  font-size: 1rem;
+  color: #555;
+  text-align: center;
+  margin-top: 20px;
+`;
+
 const Dashboard = () => {
   const { user, role } = useAuth();
   const [appointments, setAppointments] = useState([]);
@@ -101,21 +108,32 @@ const Dashboard = () => {
   const [time, setTime] = useState("");
   const [service, setService] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // Busca os agendamentos ao carregar o componente
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const data = await getAppointments(role === "ADMIN" ? null : user.id);
         setAppointments(data);
+        setError("");
       } catch (error) {
-        console.error("Erro ao buscar agendamentos:", error);
+        if (
+          error.message ===
+          "Você não tem permissão para acessar esses agendamentos."
+        ) {
+          setError(error.message);
+        } else {
+          console.error("Erro ao buscar agendamentos:", error);
+          setError("Erro ao buscar agendamentos. Tente novamente.");
+        }
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
   }, [role, user.id]);
 
-  // Função para criar um agendamento
   const handleCreateAppointment = async () => {
     if (!date || !time || !service) {
       setError("Por favor, preencha todos os campos.");
@@ -148,6 +166,9 @@ const Dashboard = () => {
       <WelcomeMessage>
         Bem-vindo, {user?.email}! Aqui você pode gerenciar seus agendamentos.
       </WelcomeMessage>
+
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      {loading && <LoadingMessage>Carregando agendamentos...</LoadingMessage>}
 
       {(role === "CLIENT" || role === "ADMIN") && (
         <>
@@ -190,11 +211,16 @@ const Dashboard = () => {
 
       <AppointmentList>
         <h3>Histórico de Agendamentos</h3>
+        {appointments.length === 0 && !loading && (
+          <p>Nenhum agendamento encontrado.</p>
+        )}
         {appointments.map((appointment) => (
           <AppointmentItem key={appointment.id}>
             <p>
-              <strong>Data:</strong> {new Date(appointment.date).toLocaleDateString()}{" "}
-              <strong>Hora:</strong> {new Date(appointment.date).toLocaleTimeString()}
+              <strong>Data:</strong>{" "}
+              {new Date(appointment.date).toLocaleDateString()}{" "}
+              <strong>Hora:</strong>{" "}
+              {new Date(appointment.date).toLocaleTimeString()}
             </p>
             <p>
               <strong>Serviço:</strong> {appointment.service}
@@ -202,6 +228,11 @@ const Dashboard = () => {
             <p>
               <strong>Status:</strong> {appointment.status}
             </p>
+            {role === "ADMIN" && (
+              <p>
+                <strong>Usuário:</strong> {appointment.user?.id}
+              </p>
+            )}
           </AppointmentItem>
         ))}
       </AppointmentList>

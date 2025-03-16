@@ -17,20 +17,17 @@ api.interceptors.request.use(
     }
 );
 
-// Função para login
 export const login = async (email, password) => {
     try {
         const response = await api.post('/auth/login', { email, password });
         console.log("Resposta da API no login:", response.data);
 
-        // Salva o token no localStorage
         localStorage.setItem('access_token', response.data.access_token);
 
-        // Retorna os tokens e o usuário (se necessário)
         return {
             access_token: response.data.access_token,
             refresh_token: response.data.refresh_token,
-            user: response.data.user, // Se o backend retornar informações do usuário
+            user: response.data.user,
         };
     } catch (error) {
         if (error.response) {
@@ -46,7 +43,6 @@ export const login = async (email, password) => {
     }
 };
 
-// Função para registro
 export const register = async (firstName, lastName, email, password) => {
     try {
         const response = await api.post('/auth/register', {
@@ -63,59 +59,29 @@ export const register = async (firstName, lastName, email, password) => {
     }
 };
 
-// Função para buscar agendamentos
 export const getAppointments = async (userId = null) => {
     try {
         const endpoint = userId ? `/appointments/user/${userId}` : '/appointments';
         const response = await api.get(endpoint);
         return response.data;
     } catch (error) {
-        console.error('Error fetching appointments:', error);
-        throw error;
+        if (error.response && error.response.status === 403) {
+            throw new Error("Você não tem permissão para acessar esses agendamentos.");
+        } else {
+            console.error('Error fetching appointments:', error);
+            throw error;
+        }
     }
 };
 
-// Função para criar um agendamento
-// Função para criar um agendamento
+
+
 export const createAppointment = async (appointmentData) => {
     try {
         const response = await api.post('/appointments', appointmentData);
         return response.data;
     } catch (error) {
         console.error('Error creating appointment:', error);
-        throw error;
-    }
-};
-
-// Função para atualizar um agendamento
-export const updateAppointment = async (id, appointmentData) => {
-    try {
-        const response = await api.put(`/appointments/${id}`, appointmentData);
-        return response.data;
-    } catch (error) {
-        console.error('Error updating appointment:', error);
-        throw error;
-    }
-};
-
-// Função para deletar um agendamento
-export const deleteAppointment = async (id) => {
-    try {
-        const response = await api.delete(`/appointments/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error deleting appointment:', error);
-        throw error;
-    }
-};
-
-// Função para buscar um agendamento por ID
-export const getAppointmentById = async (id) => {
-    try {
-        const response = await api.get(`/appointments/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching appointment:', error);
         throw error;
     }
 };

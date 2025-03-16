@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { register } from "../services/api"; // Importe a função de registro
+import { register } from "../services/api";
 import styled from "styled-components";
 import { FaUser, FaLock, FaEnvelope, FaIdBadge } from "react-icons/fa";
 import backgroundImage from "../assets/background.jpg";
 
-// Estilos
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -131,27 +130,23 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validação básica
     if (password !== confirmPassword) {
       setError("As senhas não coincidem!");
       return;
     }
 
     try {
-      // Chama a função de registro
       const user = await register(firstName, lastName, email, password);
       if (user) {
-        navigate("/login"); // Redireciona para a página de login após o registro
+        navigate("/login");
       }
     } catch (error) {
       if (error.response) {
-        // Erro retornado pelo backend
         setError(
           error.response.data.message ||
             "Erro ao registrar. Tente novamente mais tarde."
         );
       } else {
-        // Erro de rede ou outro problema
         setError("Erro de conexão. Verifique sua internet e tente novamente.");
       }
       console.error(error);

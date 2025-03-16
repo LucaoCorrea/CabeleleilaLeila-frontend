@@ -50,15 +50,15 @@ function Footer() {
   return (
     <FooterContainer>
       <FooterSection>
-        <FooterTitle>Salão Elegance</FooterTitle>
+        <FooterTitle>Salão de Beleiza</FooterTitle>
         <FooterText>
-          Transformando sua beleza em elegância. Oferecemos os melhores serviços
-          de corte, coloração e tratamentos capilares.
+          Transformando sua beleiza em elegância. Oferecemos os melhores
+          serviços de corte, coloração e tratamentos capilares.
         </FooterText>
       </FooterSection>
       <FooterSection>
         <FooterTitle>Contato</FooterTitle>
-        <FooterText>Email: contato@salaoelegance.com</FooterText>
+        <FooterText>Email: contato@salaoleila.com</FooterText>
         <FooterText>Telefone: (11) 1234-5678</FooterText>
         <FooterText>Endereço: Rua Beleza, 123 - São Paulo, SP</FooterText>
       </FooterSection>
