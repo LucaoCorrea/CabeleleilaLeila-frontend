@@ -231,6 +231,8 @@ A aplicação foi desenvolvida com foco em responsividade, garantindo uma experi
 
 ## 📝 Considerações Finais
 
-Este projeto foi desenvolvido como parte de um desafio técnico e, devido ao tempo limitado, algumas funcionalidades ainda precisam ser aprimoradas. No entanto, a aplicação está funcional e pode ser usada como base para futuras melhorias.
+Este projeto foi desenvolvido como parte de um desafio técnico, onde pude aplicar e expandir meus conhecimentos em desenvolvimento full-stack. Durante o processo, enfrentei alguns desafios, principalmente relacionados ao tempo limitado e à complexidade de algumas funcionalidades. Apesar disso, consegui entregar uma base sólida e bem estruturada, que demonstra minha capacidade de organização, lógica e boas práticas de desenvolvimento.
 
-Se você tiver alguma dúvida ou sugestão, sinta-se à vontade para entrar em contato!
+Embora o projeto não esteja totalmente funcional para atender a todas as necessidades propostas, ele serve como um ponto de partida para futuras implementações e melhorias. Acredito que essa experiência me permitiu aprender muito e evoluir como desenvolvedor, e estou confiante de que, com mais tempo, poderia entregar uma solução completa e alinhada com as expectativas.
+
+Se você tiver alguma dúvida, sugestão ou feedback, ficarei muito feliz em recebê-lo! Sinta-se à vontade para entrar em contato. 😊
